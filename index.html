@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="./weather.css">
+<script src="https://kit.fontawesome.com/652f2ab2a5.js" crossorigin="anonymous"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Shrikhand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&family=Kalam:wght@700&family=Shrikhand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Courgette&family=Josefin+Sans:wght@500&family=Kalam:wght@700&family=Shrikhand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&family=Lobster+Two:ital@1&display=swap');
+</style>
+
+</head>
+
+<body>
+    <div class="screen">
+        <h2 style="font-family: 'Lobster Two', cursive;color:rgb(246, 155, 18);text-align:center;margin-top: 5px;font-size:38px ">Weather Today</h2>
+       <input type="text" id="loctn" class="form-control mt-3" placeholder="enter your city name">
+       <center><button onclick="search()" type="button" class="btn btn-outline-warning mt-3">Search</button></center><br><br>
+       <div id="result">
+       
+    </div>
+
+    </div>
+    
+    <!-- to view -->
+    <!-- <div id="result">
+       
+    </div> -->
+</body>
+
+<script>
+    function search(){
+    loc=loctn.value
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${loc}&appid=5b4bee0ba241d092159faf007e166080`).then(res => res.json()).then(data => displayWeather(data))
+
+}
+
+function displayWeather(weatherDetails){
+  city=weatherDetails.name
+  temperature=weatherDetails.main.temp
+  Temp=Math.floor(temperature-273.15)
+  Type = weatherDetails.weather[0].main
+  Feeling=weatherDetails.main.feels_like
+  feelss=Math.floor(Feeling-273.15)
+  Humid=weatherDetails.main.humidity
+  Pressure=weatherDetails.main.pressure
+  WindSpeed=weatherDetails.wind.speed
+
+  htmlData=`
+  <p style="color:white ;font-size:25px;font-family: 'Kalam', cursive; margin-left:40px"><i class="fa-sharp fa-solid fa-location-dot"></i>&nbsp;${city}</p><br>
+  <div class="text-center">
+    <h1 style="font-size:50px; color:white ;font-family: 'Shrikhand', cursive; ">${Temp}°C</h1>
+  <p style="color:white; font-size:30px;font-family: 'Courgette', cursive;">🌦️${Type}</p>
+  <div class="row-1">
+    <div class="col-6">
+        <p style="color:white;font-family: 'Courgette', cursive;font-size:20px;">Feels like : ${feelss} °C</p>
+    </div>
+    <div class="col-6">
+        <p style="color:white;font-family: 'Courgette', cursive;font-size:20px;">Humidity : ${Humid} %</p>
+    </div>
+  </div>
+
+  <div class="row-2">
+    <div class="col-6">
+        <p style="color:white; font-family: 'Courgette', cursive;font-size:20px;">Wind Speed : ${WindSpeed} km/hr</p>
+    </div>
+    <div class="col-6">
+        <p style="color:white; font-family: 'Courgette', cursive;font-size:20px;">Pressure : ${Pressure} hPa</p>
+    </div>
+  </div>
+  </div>
+  `
+  result.innerHTML=htmlData
+}
+</script>
+</html>
